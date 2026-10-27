@@ -1,230 +1,392 @@
-⚽ Football Analytics & Scouting Platform
+# ⚽ Football Analytics & Scouting Platform
 
-A Python and PostgreSQL-based analytics platform designed to evaluate Premier League player performance, compare attacking statistics, and identify players suited to different scouting profiles.
+### Premier League 2025/26 | Python • PostgreSQL • SQL • Tableau
 
-The project combines data engineering, relational database design, SQL analytics, and data visualization to demonstrate how football performance data can support scouting decisions.
+An end-to-end football analytics platform built to analyze player performance, evaluate attacking efficiency, and identify standout players using data-driven scouting models.
 
-Project Overview
+The project combines Python-based data processing, PostgreSQL database management, SQL analytics, and interactive Tableau visualizations to transform raw football statistics into actionable insights.
 
-The platform analyzes 414 Premier League players across 20 clubs using an early-season snapshot of the 2025/26 season.
+**Dataset:** 414 Premier League players across 20 clubs  
+**Season:** 2025/26 (early-season snapshot)
 
-It processes player statistics, calculates standardized performance metrics, and ranks qualifying forwards according to their attacking strengths.
+## 🌐 Live Interactive Dashboard
 
-Key Features
+### Premier League Scouting & Performance Dashboard
 
-* Data Processing: Clean and transform football statistics using Python and pandas.
-* PostgreSQL Database: Store player, team, and performance data in related tables.
-* Performance Analytics: Calculate goals, assists, expected goals (xG), expected assists (xA), and per-90-minute metrics.
-* Scouting Models: Rank forwards using percentile-based performance scores.
-* Specialized Scouting: Evaluate players across three profiles: All-Round, Goalscorer, and Creator.
-* Player Comparison: Generate visual comparisons of attacking metrics.
-* SQL Analytics: Use joins, common table expressions, views, and window functions to produce scouting leaderboards.
+**[📊 Explore the Tableau Dashboard](https://public.tableau.com/app/profile/roti.ojo.akinkunmi/viz/PremierLeagueScoutingPerformanceDashboard202526/ENGLISHPREMIERLEAGUESCOUTINGPERFORMANCEDASHBOARD)**
 
-Technology Stack
+The interactive Tableau dashboard provides four complementary views of Premier League player performance.
 
-Technology	Purpose
-Python	Data processing and analytics
-pandas / NumPy	Data cleaning and calculations
-PostgreSQL	Relational database
-SQL	Performance analysis and scouting rankings
-psycopg	Python–PostgreSQL integration
-Matplotlib	Data visualization
-Git / GitHub	Version control
+### Dashboard Features
 
-Architecture
+**1. Top 10 Goalscorers**
+- Ranks the league's leading goalscorers.
+- Displays total goals scored by each player.
+- Highlights early-season attacking performance.
 
-Football Statistics Dataset
-           |
-           v
-     Python + pandas
-     Data Cleaning
-           |
-           v
-    PostgreSQL Database
-           |
-     +-----+------+
-     |     |      |
-   Teams Players Player Stats
-     |     |      |
-     +-----+------+
-           |
-           v
-      SQL Analytics
-           |
-           v
-   Scouting Score Models
-           |
-           v
-  Leaderboards & Visualizations
+**2. Goals vs. Expected Goals (xG)**
+- Compares actual goals against expected goals.
+- Identifies players outperforming or underperforming their expected output.
+- Uses a reference line to visualize finishing efficiency.
 
-Scouting Methodology
+**3. Scouting Leaderboard**
+- Ranks players using percentile-based scouting scores.
+- Supports three selectable scouting categories:
+  - Goalscorer
+  - Creator
+  - All-Round
+- Includes interactive team filtering and player rankings.
 
-The platform evaluates forwards who have played at least 270 minutes.
+**4. Player Comparison**
+- Allows users to select and compare two players.
+- Compares seven performance metrics:
+  - Assists per 90
+  - Games
+  - Goals per 90
+  - Expected assists (xA)
+  - Expected assists per 90
+  - Expected goals (xG)
+  - Expected goals per 90
 
-Each player receives percentile-based scores across six attacking metrics:
+The dashboard allows users to explore performance trends, compare players, and evaluate scouting results through an interactive interface.
 
-* Goals per 90
-* Assists per 90
-* Expected goals per 90
-* Expected assists per 90
-* Shots per 90
-* Key passes per 90
+---
 
-Three scouting profiles are calculated.
+## 🎯 Project Objectives
 
-All-Round
+This project was developed to:
 
-Uses equal weighting across all six attacking metrics.
+- Build an end-to-end football analytics workflow.
+- Practice data extraction, transformation, and loading (ETL).
+- Design and query a relational PostgreSQL database.
+- Apply SQL analytics to real-world sports data.
+- Evaluate player performance using standardized metrics.
+- Develop data-driven scouting and ranking models.
+- Create interactive visualizations for exploring results.
+- Demonstrate practical data engineering and analytics skills.
 
-Goalscorer
+---
 
-Prioritizes goal production and shooting opportunities.
+## 🛠️ Technology Stack
 
-Metric	Weight
-Goals	35%
-Expected Goals	35%
-Shots	20%
-Assists	5%
-Expected Assists	5%
+| Technology | Purpose |
+|---|---|
+| Python | Data processing, automation, and ETL |
+| Pandas | Data cleaning and transformation |
+| NumPy | Numerical analysis |
+| PostgreSQL | Relational database management |
+| SQL | Analytical queries, window functions, and rankings |
+| psycopg | Python-to-PostgreSQL connectivity |
+| Matplotlib | Static performance visualizations |
+| Tableau Public | Interactive dashboards and player comparisons |
+| Git & GitHub | Version control and project documentation |
 
-Creator
+---
 
-Prioritizes chance creation and attacking playmaking.
+## 🏗️ System Architecture
 
-Metric	Weight
-Assists	30%
-Expected Assists	30%
-Key Passes	25%
-Goals	10%
-Expected Goals	5%
+The platform follows a data analytics pipeline:
 
-These weights are exploratory choices rather than a validated predictive model.
+```text
+Football Performance Dataset
+            |
+            v
+    Python Data Processing
+            |
+            v
+     Data Cleaning & ETL
+            |
+            v
+      PostgreSQL Database
+            |
+            v
+     SQL Analytical Views
+            |
+            v
+    Scouting Scoring Models
+            |
+            v
+     Visualization Layer
+            |
+       +----+----+
+       |         |
+       v         v
+   Matplotlib  Tableau
+     Charts    Dashboard
+```
 
-Example Results
+### Workflow
 
-The following results demonstrate how player rankings change across scouting profiles.
+1. Load player performance data into Python.
+2. Clean and standardize player statistics using Pandas.
+3. Transform the dataset into structured relational tables.
+4. Load the processed data into PostgreSQL.
+5. Execute SQL queries to calculate performance metrics.
+6. Generate scouting rankings using percentile-based models.
+7. Export analytical views for visualization.
+8. Build static charts and an interactive Tableau dashboard.
 
-Player	All-Round Rank	Goalscorer Rank	Creator Rank
-Erling Haaland	4	1	12
-Richarlison	1	2	3
-João Pedro	2	7	1
+---
 
-Results are based on the September 2025 data snapshot and should not be interpreted as full-season rankings.
+## 🗄️ Database Design
 
-Visualizations
+The PostgreSQL database organizes football data into three main tables.
 
-Goals vs. Expected Goals
+### Teams
 
-Player Comparison
+Stores information about Premier League clubs.
 
-Project Structure
+### Players
 
+Stores player information, including player identifiers and team relationships.
+
+### Player Statistics
+
+Stores individual player performance metrics, including:
+
+- Appearances
+- Minutes played
+- Goals
+- Assists
+- Shots
+- Key passes
+- Expected goals (xG)
+- Expected assists (xA)
+
+This relational structure supports analytical queries and player-level performance comparisons.
+
+---
+
+## 📈 Performance Metrics
+
+The platform calculates standardized statistics to compare players more effectively.
+
+### Goals per 90 Minutes
+
+```text
+Goals per 90 = (Goals / Minutes Played) × 90
+```
+
+### Assists per 90 Minutes
+
+```text
+Assists per 90 = (Assists / Minutes Played) × 90
+```
+
+### Expected Goals per 90 Minutes
+
+```text
+xG per 90 = (Expected Goals / Minutes Played) × 90
+```
+
+### Expected Assists per 90 Minutes
+
+```text
+xA per 90 = (Expected Assists / Minutes Played) × 90
+```
+
+### Goals Minus Expected Goals
+
+```text
+Goals - xG
+```
+
+This metric helps identify players scoring above or below their expected goal totals.
+
+Per-90 metrics help account for differences in playing time when evaluating performance.
+
+---
+
+## 🔍 Scouting & Ranking Models
+
+The platform implements three scouting categories to evaluate attacking players.
+
+### 1. Goalscorer Score
+
+Evaluates players based on their goalscoring performance.
+
+### 2. Creator Score
+
+Evaluates players based on their ability to generate attacking opportunities and contribute assists.
+
+### 3. All-Round Score
+
+Evaluates players across multiple attacking performance metrics.
+
+### Scoring Methodology
+
+The scouting models use percentile-based scoring to compare players within the eligible dataset.
+
+SQL window functions are used to calculate rankings and generate leaderboards.
+
+Players must meet a minimum playing-time threshold of **270 minutes** to qualify for the scouting leaderboard.
+
+This helps reduce the influence of extremely small samples.
+
+### Interactive Scouting
+
+The Tableau dashboard allows users to switch between Goalscorer, Creator, and All-Round scores without rebuilding the visualization.
+
+---
+
+## 📊 Data Visualizations
+
+The project includes both Python-generated visualizations and an interactive Tableau dashboard.
+
+### Python Visualizations
+
+Matplotlib is used to explore player performance through visualizations such as:
+
+- Goals vs. expected goals
+- Player comparison charts
+- Performance distributions
+- Scouting-related comparisons
+
+### Tableau Dashboard
+
+The Tableau dashboard extends the project by providing interactive visual analysis.
+
+Users can:
+
+- Explore top goalscorers.
+- Evaluate goalscoring efficiency.
+- Filter scouting rankings by club.
+- Switch between scouting categories.
+- Compare individual players.
+- Examine performance metrics through interactive charts.
+
+**[Open the Interactive Tableau Dashboard](https://public.tableau.com/app/profile/roti.ojo.akinkunmi/viz/PremierLeagueScoutingPerformanceDashboard202526/ENGLISHPREMIERLEAGUESCOUTINGPERFORMANCEDASHBOARD)**
+
+---
+
+## 📁 Project Structure
+
+The project is organized around the following components:
+
+```text
 football-analytics/
-├── dashboards/
-│   ├── goals_vs_xg.png
-│   └── player_comparison.png
+|
 ├── data/
-│   ├── raw/
-│   └── processed/
-├── sql/
-│   ├── player_performance.sql
-│   ├── forward_scouting.sql
-│   ├── specialized_scouting.sql
-│   └── scouting_leaderboard.sql
-├── src/
-│   ├── explore_data.py
-│   ├── player_analysis.py
-│   ├── visualize_players.py
-│   ├── player_scouting.py
-│   ├── player_comparison.py
-│   ├── database_setup.py
-│   └── import_data.py
+│   └── tableau/
+│       ├── player_performance.csv
+│       └── scouting_leaderboard.csv
+│
+├── README.md
 ├── requirements.txt
-├── .gitignore
-└── README.md
+│
+├── Python data processing and ETL scripts
+├── PostgreSQL database and SQL queries
+├── Scouting analysis and ranking models
+└── Data visualizations
+```
 
-Dataset
+The Tableau CSV files are generated from PostgreSQL analytical views.
 
-The project uses publicly available football statistics from the Understat player aggregation dataset.
+---
 
-Source: vibedatascience/understat_players_aggregated on GitHub.
+## 🚀 Getting Started
 
-Important limitation: The dataset used for the current analysis was collected on September 21, 2025, early in the Premier League season. Consequently, rankings reflect a small sample of matches and may change substantially as more data becomes available.
+### 1. Clone the Repository
 
-Players with multiple club associations may also require additional handling to attribute their statistics accurately.
-
-Setup
-
-1. Clone the repository
-
+```bash
 git clone https://github.com/REB3L7/football_analytics.git
 cd football_analytics
+```
 
-2. Create a virtual environment
+### 2. Create a Virtual Environment
 
+```bash
 python3 -m venv venv
 source venv/bin/activate
+```
 
-3. Install dependencies
+### 3. Install Dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
-4. Download the dataset
+### 4. Configure PostgreSQL
 
-Create the raw data directory and download the source CSV:
+Install PostgreSQL and create a database:
 
-mkdir -p data/raw data/processed
-curl -L \
-  https://raw.githubusercontent.com/vibedatascience/understat_players_aggregated/main/understat_players_aggregated_2025_latest.csv \
-  -o data/raw/premier_league_players.csv
+```bash
+createdb football_analytics
+```
 
-The upstream dataset may have changed since the snapshot used for the example results.
+Configure the database connection in the project's Python scripts as required.
 
-5. Prepare PostgreSQL
+### 5. Run the Data Pipeline
 
-Install and start PostgreSQL, then create a database named:
+Execute the project's data-processing and database-loading scripts in the order documented in the source code.
 
-football_analytics
+### 6. Explore the Results
 
-The current database scripts use a local PostgreSQL connection and may require updating the username in src/database_setup.py and src/import_data.py.
+Run the SQL analytical queries and generate the project's visualizations.
 
-6. Process and import data
+Alternatively, explore the published Tableau dashboard directly:
 
-Run the scripts in order:
+**[View Dashboard](https://public.tableau.com/app/profile/roti.ojo.akinkunmi/viz/PremierLeagueScoutingPerformanceDashboard202526/ENGLISHPREMIERLEAGUESCOUTINGPERFORMANCEDASHBOARD)**
 
-python src/explore_data.py
-python src/player_analysis.py
-python src/database_setup.py
-python src/import_data.py
+---
 
-7. Create the SQL analytics views
+## 💡 Key Takeaways
 
-psql football_analytics -f sql/player_performance.sql
-psql football_analytics -f sql/forward_scouting.sql
-psql football_analytics -f sql/specialized_scouting.sql
-psql football_analytics -f sql/scouting_leaderboard.sql
+This project demonstrates practical experience in:
 
-8. Query the scouting leaderboard
+- Building data processing pipelines using Python.
+- Cleaning and transforming structured datasets.
+- Designing and querying PostgreSQL databases.
+- Applying SQL window functions to analytical problems.
+- Developing percentile-based ranking systems.
+- Standardizing performance metrics for meaningful comparisons.
+- Creating static and interactive data visualizations.
+- Communicating analytical results through dashboards.
 
-SELECT
-    player_name,
-    team_name,
-    goalscorer_rank,
-    creator_rank
-FROM vw_scouting_leaderboard
-ORDER BY goalscorer_rank
-LIMIT 10;
+It combines data engineering, SQL analytics, and business intelligence concepts within a football scouting application.
 
-Future Improvements
+---
 
-* Build an interactive Power BI scouting dashboard.
-* Incorporate additional seasons and updated player statistics.
-* Expand scouting models to midfielders and defenders.
-* Improve transfer handling and historical team assignments.
-* Evaluate scouting weights using larger datasets.
+## ⚠️ Data Limitations
 
-Author
+This project uses an **early-season snapshot of the 2025/26 Premier League season**, rather than complete season statistics.
 
-Roti Ojo-Akinkunmi
+As a result:
+
+- Player rankings reflect the available snapshot.
+- Performance metrics may change as additional matches are played.
+- Small sample sizes can influence early-season results.
+- Scouting scores are analytical indicators rather than definitive assessments of player ability.
+- The dataset should not be interpreted as current live-season data.
+
+The scouting leaderboard uses a minimum playing-time threshold to reduce some small-sample effects.
+
+---
+
+## 🔮 Future Improvements
+
+Potential enhancements include:
+
+- Automated data updates from football statistics APIs.
+- Multi-season player performance comparisons.
+- Position-specific scouting models.
+- Additional defensive and possession-based metrics.
+- More advanced player similarity analysis.
+- Automated Tableau data refresh workflows.
+- Predictive modeling for player performance.
+
+---
+
+## 👨‍💻 Author
+
+**Olumoroti Ojo-Akinkunmi**
 
 Information Technology | University of South Florida
+
+- [LinkedIn](https://www.linkedin.com/in/olumoroti-ojo-akinkunmi/)
+- [GitHub](https://github.com/REB3L7)
+- [Tableau Dashboard](https://public.tableau.com/app/profile/roti.ojo.akinkunmi/viz/PremierLeagueScoutingPerformanceDashboard202526/ENGLISHPREMIERLEAGUESCOUTINGPERFORMANCEDASHBOARD)
+
+---
+
+*Built to explore the intersection of football, data engineering, analytics, and interactive visualization.*
