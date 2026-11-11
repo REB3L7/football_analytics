@@ -45,7 +45,7 @@ jobs:
         run: python -m compileall -q src scripts tests
 
       - name: Install Python dependencies
-        run: python -m pip install requests python-dotenv
+        run: python -m pip install requests python-dotenv psycopg2-binary
 
       - name: Test API pagination
         run: python -m unittest discover -s tests/python -p 'test_fetch_matches.py' -v
