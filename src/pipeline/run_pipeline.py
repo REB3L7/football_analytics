@@ -29,7 +29,7 @@ def run_pipeline(batch_size=5):
         client = SoccerDataClient()
 
         print("Fetching finished matches...")
-        matches = fetch_all_matches()
+        matches = fetch_all_matches(client=client)
         discovered = len(matches)
 
         print(f"\nFound {discovered} finished matches.")
@@ -88,7 +88,20 @@ def run_pipeline(batch_size=5):
     except Exception as error:
         failed += 1
         error_message = str(error)
-        print(f"\nPIPELINE ERROR: {error_message}")
+
+        response = getattr(error, "response", None)
+
+        if response is not None and response.status_code == 429:
+            rate_limited = True
+
+            retry_after = response.headers.get(
+                "Retry-After", "Unknown"
+            )
+
+            print("\nAPI RATE LIMIT REACHED DURING MATCH DISCOVERY")
+            print(f"Retry after: {retry_after} seconds")
+        else:
+            print(f"\nPIPELINE ERROR: {error_message}")
 
     finally:
         status = determine_run_status(successful, failed, rate_limited)
