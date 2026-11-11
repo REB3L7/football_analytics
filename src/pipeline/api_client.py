@@ -1,4 +1,3 @@
-
 import os
 import requests
 
@@ -94,11 +93,34 @@ class SoccerDataClient:
 
         return payload.get("data", payload)
 
-    def get_matches(self, **params):
-        return self.get(
-            "matches",
-            params=params
+    def get_matches(self, include_meta=False, **params):
+        if not include_meta:
+            return self.get("matches", params=params)
+
+        response = self.session.get(
+            f"{BASE_URL}/matches",
+            params=params,
+            timeout=30
+    )
+
+        response.raise_for_status()
+        payload = response.json()
+
+        if not isinstance(payload, dict):
+            raise ValueError("Unexpected API response")
+
+        if payload.get("error") or payload.get("errors"):
+            raise RuntimeError(
+                f"API error: {payload.get('error') or payload.get('errors')}"
         )
+
+        if not isinstance(payload.get("data"), list):
+            raise ValueError("Unexpected matches data")
+
+        if not isinstance(payload.get("meta"), dict):
+            raise ValueError("Missing pagination metadata")
+
+        return payload
 
     def get_player_stats(self, match_id):
         return self.get(

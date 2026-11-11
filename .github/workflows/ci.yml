@@ -44,6 +44,9 @@ jobs:
       - name: Verify Python syntax
         run: python -m compileall -q src scripts tests
 
+      - name: Test API pagination
+        run: python -m unittest discover -s tests/python -p 'test_fetch_matches.py' -v
+
       - name: Install PostgreSQL client
         run: |
           sudo apt-get update

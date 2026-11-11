@@ -7,19 +7,30 @@ PAGE_SIZE = 20
 MAX_PAGES = 30
 
 
-def fetch_all_matches():
-    client = SoccerDataClient()
+def fetch_all_matches(client=None):
+    if client is None:
+        client = SoccerDataClient()
 
     all_matches = []
     seen_ids = set()
 
     for page in range(1, MAX_PAGES + 1):
-        matches = client.get_matches(
+        payload = client.get_matches(
+            include_meta=True,
             competition_id=COMPETITION_ID,
             season_id=SEASON_ID,
             status="finished",
             page=page
         )
+
+        matches = payload["data"]
+        meta = payload["meta"]
+        total_pages = int(meta["total_pages"])
+
+        if total_pages < 1 or total_pages > MAX_PAGES:
+            raise ValueError(
+                f"Invalid total_pages: {total_pages}"
+            )
 
         if not matches:
             break
@@ -37,23 +48,22 @@ def fetch_all_matches():
             new_count += 1
 
         print(
-            f"Page {page}: "
+            f"Page {page}/{total_pages}: "
             f"{len(matches)} returned, "
             f"{new_count} new"
         )
 
-        if new_count == 0 or len(matches) < PAGE_SIZE:
+        if page >= total_pages:
             break
-    else:
-        raise RuntimeError(
-            "Maximum pagination limit reached. "
-            "Check whether more pages are available."
-        )
+
+        if new_count == 0:
+            raise RuntimeError(
+                f"Pagination made no progress on page {page}"
+            )
 
     return all_matches
 
 
 if __name__ == "__main__":
     matches = fetch_all_matches()
-
     print(f"\nTotal matches fetched: {len(matches)}")
