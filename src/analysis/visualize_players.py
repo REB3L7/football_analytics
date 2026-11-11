@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parents[2]
 
 DATA_PATH = BASE_DIR / "data" / "processed" / "epl_player_metrics.csv"
 

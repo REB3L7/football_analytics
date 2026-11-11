@@ -389,4 +389,4 @@ Information Technology | University of South Florida
 
 ---
 
-*Built to explore the intersection of football, data engineering, analytics, and interactive visualization.*
+*This project was built to explore the intersection of football, data engineering, analytics, and interactive visualization.*

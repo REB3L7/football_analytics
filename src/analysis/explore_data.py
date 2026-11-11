@@ -2,7 +2,7 @@ import pandas as pd
 from pathlib import Path
 
 # Project directory
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parents[2]
 
 # Dataset location
 DATA_PATH = BASE_DIR / "data" / "raw" / "premier_league_players.csv"
