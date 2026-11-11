@@ -9,5 +9,13 @@ CREATE TABLE IF NOT EXISTS live.pipeline_runs (
     player_records_processed INTEGER DEFAULT 0,
     error_message TEXT,
     CONSTRAINT valid_pipeline_status
-        CHECK (status IN ('running', 'success', 'failed'))
+    CHECK (
+        status IN (
+            'running',
+            'success',
+            'failed',
+            'partial_success',
+            'rate_limited'
+    )
+)
 );

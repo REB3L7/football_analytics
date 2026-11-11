@@ -6,6 +6,13 @@ from .database import get_connection, match_exists
 from .ingest_match import ingest_match
 from .pipeline_logger import start_run, finish_run
 
+def determine_run_status(successful, failed, rate_limited):
+    if rate_limited:
+        return "partial_success" if successful > 0 else "rate_limited"
+    if failed:
+        return "failed"
+    return "success"
+
 def run_pipeline(batch_size=5):
     run_id = start_run()
 
@@ -14,6 +21,7 @@ def run_pipeline(batch_size=5):
     failed = 0
     total_players = 0
     error_message = None
+    rate_limited = False
 
     print(f"Pipeline run ID: {run_id}")
 
@@ -67,6 +75,7 @@ def run_pipeline(batch_size=5):
                     response is not None
                     and response.status_code == 429
                 ):
+                    rate_limited = True
                     retry_after = response.headers.get(
                         "Retry-After", "Unknown"
                     )
@@ -82,7 +91,7 @@ def run_pipeline(batch_size=5):
         print(f"\nPIPELINE ERROR: {error_message}")
 
     finally:
-        status = "failed" if failed else "success"
+        status = determine_run_status(successful, failed, rate_limited)
 
         finish_run(
             run_id=run_id,
