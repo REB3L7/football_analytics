@@ -1,5 +1,6 @@
 import os
 import requests
+import time
 
 from dotenv import load_dotenv
 from requests.adapters import HTTPAdapter
@@ -45,63 +46,73 @@ class SoccerDataClient:
             "X-Api-Key": self.api_key
         })
 
-    def get(self, endpoint, params=None):
-
+    def get(self, endpoint, params=None, include_meta=False):
         url = f"{BASE_URL}/{endpoint.lstrip('/')}"
 
-        response = self.session.get(
-            url,
-            params=params,
-            timeout=30
-        )
+        for attempt in range(2):
+            response = self.session.get(
+                url,
+                params=params,
+                timeout=30
+            )
 
-        # Detect API rate limiting
-        if response.status_code == 429:
-            print("\nAPI RATE LIMIT DETECTED")
+            if response.status_code == 429:
+                retry_after = response.headers.get("Retry-After")
 
-            print(
-                "Retry-After:",
-                response.headers.get(
-                    "Retry-After",
-                    "Not provided"
+                print("\nAPI RATE LIMIT DETECTED")
+                print("Retry-After:", retry_after or "Not provided")
+
+                try:
+                    wait_seconds = float(retry_after)
+                except (TypeError, ValueError):
+                    wait_seconds = None
+
+                if (
+                    attempt == 0
+                    and wait_seconds is not None
+                    and 0 <= wait_seconds <= 60
+                ):
+                    print(f"Waiting {wait_seconds:g} seconds before retry...")
+                    time.sleep(wait_seconds)
+                    continue
+
+                print("Stopping request due to rate limit.")
+
+            response.raise_for_status()
+
+            payload = response.json()
+
+            if not isinstance(payload, dict):
+                raise ValueError("Unexpected API response")
+
+            if payload.get("error") or payload.get("errors"):
+                raise RuntimeError(
+                    f"API error: "
+                    f"{payload.get('error') or payload.get('errors')}"
                 )
-            )
 
-            print(
-                "Rate limit remaining:",
-                response.headers.get(
-                    "X-RateLimit-Remaining",
-                    "Not provided"
-                )
-            )
+            if include_meta:
+                return payload
 
-        # Raise an error for unsuccessful requests
-        response.raise_for_status()
-
-        payload = response.json()
-
-        if not isinstance(payload, dict):
-            raise ValueError(
-                "Unexpected API response"
-            )
-
-        if payload.get("error") or payload.get("errors"):
-            raise RuntimeError(
-                f"API error: "
-                f"{payload.get('error') or payload.get('errors')}"
-            )
-
-        return payload.get("data", payload)
+            return payload.get("data", payload)
 
     def get_matches(self, include_meta=False, **params):
-        if not include_meta:
-            return self.get("matches", params=params)
-
-        response = self.session.get(
-            f"{BASE_URL}/matches",
+        payload = self.get(
+            "matches",
             params=params,
-            timeout=30
-    )
+            include_meta=True
+        )
+
+        if not isinstance(payload.get("data"), list):
+            raise ValueError("Unexpected matches data")
+
+        if not isinstance(payload.get("meta"), dict):
+            raise ValueError("Missing pagination metadata")
+
+        if include_meta:
+            return payload
+
+        return payload["data"]
 
         response.raise_for_status()
         payload = response.json()

@@ -53,6 +53,9 @@ jobs:
       - name: Test pipeline status handling
         run: python -m unittest discover -s tests/python -p 'test_pipeline_status.py' -v
 
+      - name: Test API rate-limit recovery
+        run: python -m unittest discover -s tests/python -p 'test_api_rate_limits.py' -v
+
       - name: Verify PostgreSQL client
         run: |
           psql --version
